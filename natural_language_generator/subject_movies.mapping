@@ -1,0 +1,17 @@
+http://dbpedia.org/ontology/narrator	narrated by
+http://dbpedia.org/ontology/distributor	distributed by
+http://dbpedia.org/ontology/releaseLocation	@
+http://dbpedia.org/ontology/producer	produced by
+http://dbpedia.org/ontology/starring	starred by
+http://dbpedia.org/ontology/language	in
+http://www.w3.org/2002/07/owl#differentFrom	@
+http://dbpedia.org/ontology/editing	edited by
+http://dbpedia.org/ontology/country	shot in
+http://dbpedia.org/ontology/musicComposer	whose music was composed by
+http://dbpedia.org/ontology/basedOn	whose based on
+http://dbpedia.org/ontology/soundRecording	@
+http://purl.org/dc/terms/subject	_
+http://dbpedia.org/ontology/cinematography	whose cinematography is
+http://dbpedia.org/ontology/writer	written by
+http://dbpedia.org/ontology/director	directed by
+http://www.w3.org/2000/01/rdf-schema#seeAlso	@
