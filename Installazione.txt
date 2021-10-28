@@ -9,3 +9,5 @@ Il codice va eseguito da linea di comando quindi:
 		3.2   python main.py [I:8405,I:8865] [I:9252] 3 schema 1 False
 		3.3   python main.py [I:5030,I:8589,I:10402,I:8396] [I:8889] 3 baseline 1 False
 		3.4   python main.py [I:197,I:9476,I:12035,I:1587,I:3269,I:61825] [I:12754,I:40161] 3 primolivello 1 False
+		
+In generale :  python main.py [id dei film piaciuti] [id dei film raccomandati] numero_proprietà_considerate tipo_spiegazione template tag_html 
