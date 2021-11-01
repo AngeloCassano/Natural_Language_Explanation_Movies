@@ -2,7 +2,7 @@ Per l'installazione del codice non è necessario nulla di particolare se non sca
 
 Il codice va eseguito da linea di comando quindi:
 	1. Aprire il cmd (Prompt dei comandi)
-	2. Spostarsi nella directory del progetto copiando tutto il path in cui si è salvata la directory (cd ../natural_langiage_explanation)
+	2. Spostarsi nella directory del progetto copiando tutto il path in cui si è salvata la directory (cd ../natural_language_explanation)
 	3. Lanciare il comando per far partire il programma, di seguito alcuni esempi con i dati di input:
 		
 		3.1   python main.py [I:9592,I:10962,I:9367] [I:11656] 3 primolivello 1 False
