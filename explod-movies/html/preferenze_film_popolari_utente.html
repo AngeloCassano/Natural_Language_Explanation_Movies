@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>MoviesExplanation</title>
+	<meta name="description" content="Core HTML Project">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- External css -->
+	<link rel="stylesheet" href="../../stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+	<!-- Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400|Work+Sans:300,400,700" rel="stylesheet">
+
+	<!-- css -->
+	<link rel="stylesheet" href="../css/style.css">
+	<link rel="stylesheet" href="../css/custom.css">
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
+
+<style>
+#main-container{
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+.card{
+	background: white;
+	width: 200%;
+	border: 2px solid aliceblue;
+	border-radius: 15px;
+	margin: 20px;
+
+}
+
+.card-img-top{
+	border-radius: 15px 15px 0px 0px;
+	width: 100%;
+	height: 200px;
+	object-fit: contain;
+}
+
+.card-body{
+	padding: 10px 20px;
+}
+
+.card-title{
+	text-align: center;
+	width: 100%;
+	text-transform: uppercase;
+	font-size: 18px;
+}
+
+.cards-container{
+	display: grid;
+	grid-template-columns: 50% 50%;
+}
+</style>
+</head>
+<div class="card" style="width: 1250px !important;">
+    <div class="card-body">
+        <div class="container" >
+            <span class="navbar-brand">
+                <img src="../img/logoUniba.png" width="240" height="80" class="d-inline-block align-top" alt="">
+                <a href="../html/index.html"> MOVIES EXPLANATION</a>
+            </span>
+        </div>
+        <div class="title-wrap">
+			<br>
+            <h2 class="section-title">Which movies do you like?</h2>
+            <p class="section-sub-title">(Select at least three movies you like)</p>
+        </div>
+        <form id="form" method="post" action="../php/manage_request_baseline.php">
+        	<div id='main-container'>
+        		<div class='cards-container'>
+        			<div class="card" style="width: 40rem;">
+              			<img src="../image/I_11033.jpg" class="card-img-top" alt="...">
+              			<div class="card-body">
+                			<h5 class="card-title">The Green Mile</h5>
+                			<p class="card-text">Do you like this movie?</p>
+                            <div class="radio-inline">
+                                <label><input type="radio" name="film1" value="Yes">Yes</label>
+                            </div>
+                            <div class="radio-inline">
+                                <label><input type="radio" name="film1" value="No">No</label>
+                            </div>	
+                            <div class="radio-inline">
+                                <label><input type="radio" name="film1" value="Non Visto" checked>I did not watch this movie</label>
+                            </div>
+              			</div>
+            		</div>
+            		<div class="card" style="width: 40rem;">
+              			<img src="../image/I_15286.jpg" class="card-img-top" alt="...">
+              			<div class="card-body">
+                			<h5 class="card-title">Memento</h5>
+                			<p class="card-text">Do you like this movie?</p>
+                            <div class="radio-inline">
+                                <label><input type="radio" name="film2" value="Yes">Yes</label>
+                            </div>
+                            <div class="radio-inline">
+                                <label><input type="radio" name="film2" value="No">No</label>
+                            </div>	
+                            <div class="radio-inline">
+                                <label><input type="radio" name="film2" value="Non Visto" checked>I did not watch this movie</label>
+                            </div>
+              			</div>
+            		</div>
+        		</div>
+        	</div>
+	        <div id='main-container'>
+	        	<div class='cards-container'>
+	        		<div class="card" style="width: 40rem;">
+	              		<img src="../image/I_8360.jpg" class="card-img-top" alt="...">
+	              		<div class="card-body">
+	                		<h5 class="card-title">Full Metal Jacket</h5>
+	                		<p class="card-text">Do you like this movie?</p>
+	                        <div class="radio-inline">
+	                        	<label><input type="radio" name="film3" value="Yes">Yes</label>
+	                        </div>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film3" value="No">No</label>
+	                        </div>	
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film3" value="Non Visto" checked>I did not watch this movie</label>
+	                        </div>
+	              		</div>
+	            	</div>
+	            	<div class="card" style="width: 40rem;">
+	              		<img src="../image/I_11940.jpg" class="card-img-top" alt="...">
+	              		<div class="card-body">
+	                		<h5 class="card-title">The Departed</h5>
+	                		<p class="card-text">Do you like this movie?</p>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film4" value="Yes">Yes</label>
+	                        </div>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film4" value="No">No</label>
+	                        </div>	
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film4" value="Non Visto" checked>I did not watch this movie</label>
+	                        </div>
+	              		</div>
+	            	</div>
+	        	</div>
+	        </div>
+	        <div id='main-container'>
+	        	<div class='cards-container'>
+	        		<div class="card" style="width: 40rem;">
+	              		<img src="../image/I_1661.jpg" class="card-img-top" alt="...">
+	              		<div class="card-body">
+	                		<h5 class="card-title">Avatar</h5>
+	                		<p class="card-text">Do you like this movie?</p>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film5" value="Yes">Yes</label>
+	                        </div>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film5" value="No">No</label>
+	                        </div>	
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film5" value="Non Visto" checked>I did not watch this movie</label>
+	                        </div>
+	              		</div>
+	            	</div>
+	            	<div class="card" style="width: 40rem;">
+	              		<img src="../image/I_1301.jpg" class="card-img-top" alt="...">
+	              		<div class="card-body">
+	                		<h5 class="card-title">The Italian Job</h5>
+	                		<p class="card-text">Do you like this movie?</p>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film6" value="Yes">Yes</label>
+	                        </div>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film6" value="No">No</label>
+	                        </div>	
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film6" value="Non Visto" checked>I did not watch this movie</label>
+	                        </div>
+	              		</div>
+	            	</div>
+	        	</div>
+	        </div>
+	        <div id='main-container'>
+	        	<div class='cards-container'>
+	        		<div class="card" style="width: 40rem;">
+	              		<img src="../image/I_1982.jpg" class="card-img-top" alt="...">
+	              		<div class="card-body">
+	                		<h5 class="card-title">Iron Man</h5>
+	                		<p class="card-text">Do you like this movie?</p>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film7" value="Yes">Yes</label>
+	                        </div>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film7" value="No">No</label>
+	                        </div>	
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film7" value="Non Visto" checked>I did not watch this movie</label>
+	                        </div>
+	              		</div>
+	            	</div>
+	            	<div class="card" style="width: 40rem;">
+	              		<img src="../image/I_43907.jpg" class="card-img-top" alt="...">
+	              		<div class="card-body">
+	                		<h5 class="card-title">The Social Network</h5>
+	                		<p class="card-text">Do you like this movie?</p>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film8" value="Yes">Yes</label>
+	                        </div>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film8" value="No">No</label>
+	                        </div>	
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film8" value="Non Visto" checked>I did not watch this movie</label>
+	                        </div>
+	              		</div>
+	            	</div>
+	        	</div>
+	        </div>
+	        <div id='main-container'>
+	        	<div class='cards-container'>
+	        		<div class="card" style="width: 40rem;">
+	              		<img src="../image/I_8487.jpg" class="card-img-top" alt="...">
+	              		<div class="card-body">
+	                		<h5 class="card-title">Toy Story</h5>
+	                		<p class="card-text">Do you like this movie?</p>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film9" value="Yes">Yes</label>
+	                        </div>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film9" value="No">No</label>
+	                        </div>	
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film9" value="Non Visto" checked>I did not watch this movie</label>
+	                        </div>
+	              		</div>
+	            	</div>
+	            	<div class="card" style="width: 40rem;">
+	              		<img src="../image/I_62.jpg" class="card-img-top" alt="...">
+	              		<div class="card-body">
+	                		<h5 class="card-title">The Ring</h5>
+	                		<p class="card-text">Do you like this movie?</p>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film10" value="Yes">Yes</label>
+	                        </div>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film10" value="No">No</label>
+	                        </div>	
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film10" value="Non Visto" checked>I did not watch this movie</label>
+	                        </div>
+	              		</div>
+	            	</div>
+	        	</div>
+	        </div>
+	        <div id='main-container'>
+	        	<div class='cards-container'>
+	        		<div class="card" style="width: 40rem;">
+	              		<img src="../image/I_5511.jpg" class="card-img-top" alt="...">
+	              		<div class="card-body">
+	                		<h5 class="card-title">Prisoners</h5>
+	                		<p class="card-text">Do you like this movie?</p>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film11" value="Yes">Yes</label>
+	                        </div>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film11" value="No">No</label>
+	                        </div>	
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film11" value="Non Visto" checked>I did not watch this movie</label>
+	                        </div>
+	              		</div>
+	            	</div>
+	            	<div class="card" style="width: 40rem;">
+	              		<img src="../image/I_8652.jpg" class="card-img-top" alt="...">
+	              		<div class="card-body">
+	                		<h5 class="card-title">Jaws</h5>
+	                		<p class="card-text">Do you like this movie?</p>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film12" value="Yes">Yes</label>
+	                        </div>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film12" value="No">No</label>
+	                        </div>	
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film12" value="Non Visto" checked>I did not watch this movie</label>
+	                        </div>
+	              		</div>
+	            	</div>
+	        	</div>
+	        </div>
+	        <div id='main-container'>
+	        	<div class='cards-container'>
+	        		<div class="card" style="width: 40rem;">
+	              		<img src="../image/I_69832.jpg" class="card-img-top" alt="...">
+	              		<div class="card-body">
+	                		<h5 class="card-title">The Imitation Game</h5>
+	                		<p class="card-text">Do you like this movie?</p>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film13" value="Yes">Yes</label>
+	                        </div>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film13" value="No">No</label>
+	                        </div>	
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film13" value="Non Visto" checked>I did not watch this movie</label>
+	                        </div>
+	              		</div>
+	            	</div>
+	            	<div class="card" style="width: 40rem;">
+	              		<img src="../image/I_488.jpg" class="card-img-top" alt="...">
+	              		<div class="card-body">
+	                		<h5 class="card-title">Casino Royale</h5>
+	                		<p class="card-text">Do you like this movie?</p>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film14" value="Yes">Yes</label>
+	                        </div>
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film14" value="No">No</label>
+	                        </div>	
+	                        <div class="radio-inline">
+	                            <label><input type="radio" name="film14" value="Non Visto" checked>I did not watch this movie</label>
+	                        </div>
+	              		</div>
+	            	</div>
+	        	</div>
+	        </div>
+	        <center>
+		        <div class="col-md-8 offset-md-2 form-btn text-center">
+	                <button id="btnForm" class="btn btn-block btn-secondary btn-red col-md-4 offset-md-4 link-button" type="submit" name="submit">Build My Profile</button>
+	            </div>
+	        </center>
+        </form>
+
+        <footer class="mastfoot mb-3 bg-white py-4 border-top">
+			<div class="inner container">
+				<div class="row">
+					<div class="col-md-6 d-flex">
+						<span> &copy; 2019 <a href="http://www.di.uniba.it/~swap/" target="_blank"> SWAP Research Group </a></span>
+					</div>
+					<div class="col-md-6 d-flex flex-row-reverse">
+						<span>Developed by <a href="https://github.com/maky9904" target="_blank">Marco Nuzzachi</a> &amp;     <a href="https://github.com/cataldomusto" target="_blank">Cataldo Musto</a></span>
+					</div>
+				</div>
+			</div>
+		</footer>	
+
+
+</html>

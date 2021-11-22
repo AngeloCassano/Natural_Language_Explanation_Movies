@@ -1,0 +1,5 @@
+age, gender, education, interestMovies, recsysUsed, film_piaciuti, film_raccomandati, baseline, rate_baseline, motivation_baseline, convincing_baseline, discover_information_baseline, trust_baseline, schema, rate_schema, motivation_schema, convincing_schema, discover_information_schema, trust_schema, primolivello, rate_primolivello, motivation_primolivello, convincing_primolivello, discover_information_primolivello, trust_primolivello 
+
+
+
+19-25, Male, Bachelor_Degree, Medium, Yes, [I:8360,I:43907,I:5511], [I:8396], baseline, 3, 2, 4, 3, 3, schema, 3, 4, 2, 2, 5, primolivello, 2, 4, 5, 5, 3

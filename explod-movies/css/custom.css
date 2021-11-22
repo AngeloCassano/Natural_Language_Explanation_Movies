@@ -1,0 +1,56 @@
+.button-container{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	margin-top: 30px;
+}
+
+
+.link-button{
+ text-decoration: none;
+ padding: 15px 30px;
+ background: #3675e7;
+ color: white;
+
+ font-size: 18px;
+ text-transform: uppercase;
+ font-weight: 700;
+}
+
+
+.link-button:hover{
+ background: #efc57a !important;
+ color: #3675e7 !important;
+}
+
+
+.container{
+	padding: 8vh 10%;
+}
+
+nav .container{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+
+.container .navbar-brand a{
+	font-weight: 800;
+	font-size: 25px;
+	text-decoration: none;
+}
+
+.container .navbar-brand{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;	
+	width: 100%; 
+}
+
+.container .navbar-brand img{
+	margin-right: 20px;
+}
