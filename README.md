@@ -60,9 +60,9 @@ Un esempio di output è il seguente:
 ### Builder
 Per effettuare una chiamata al Builder da riga di comando, è necessario lanciare il seguente comando:
 ```shell
-   python Builder.py cmd_builder [I:11033,I:8360,I:1661,I:8487] [I:11768]
+   python Builder.py cmd_builder [I:11033,I:8360,I:1661,I:8487] [I:11768] True
 ```
-Dove *Builder.py* è lo script della componente, *cmd_builder* è la funzione chiamata nello script che esegue la componente, i dati tra parentesi quadre sono gli ID dei film piaciuti e dei film raccomandati passati come parametri alla funzione chiamata. <br>
+Dove *Builder.py* è lo script della componente, *cmd_builder* è la funzione chiamata nello script che esegue la componente, i dati tra parentesi quadre sono gli ID dei film piaciuti e dei film raccomandati passati come parametri alla funzione chiamata e *True* o *False* indica se visualizzare o meno il grafo.<br>
 Un esempio di output è il seguente:
 ```shell
    Esecuzione componente Builder...
@@ -84,9 +84,9 @@ Un esempio di output è il seguente:
 ### Ranker
 Per effettuare una chiamata al Ranker da riga di comando, è necessario lanciare il seguente comando:
 ```shell
-   python Ranker.py cmd_ranker [I:11033,I:8360,I:1661,I:8487] [I:11768]
+   python Ranker.py cmd_ranker [I:11033,I:8360,I:1661,I:8487] [I:11768] True
 ```
-Dove *Ranker.py* è lo script della componente, *cmd_ranker* è la funzione chiamata nello script che esegue la componente, i dati tra parentesi quadre sono gli ID dei film piaciuti e dei film raccomandati passati come parametri alla funzione chiamata. <br>
+Dove *Ranker.py* è lo script della componente, *cmd_ranker* è la funzione chiamata nello script che esegue la componente, i dati tra parentesi quadre sono gli ID dei film piaciuti e dei film raccomandati passati come parametri alla funzione chiamata e *True* o *False* indica se utilizzare o meno l'IDF nel calcolo.<br>
 Un esempio di output è il seguente:
 ```shell
    Esecuzione componente Ranker...
@@ -105,19 +105,21 @@ Un esempio di output è il seguente:
 Per eseguire una richiesta al Recommender da rifa di comando, come prima cosa ci si deve spostare nella cartella **explod-movies-backend** e successivamente lanciare il comando con i dati richiesti dal sistema per l'esecuzione. <br>
 Un esempio di comando per una richiesta è il seguente:
 ```shell
-   python main.py [I:11033,I:8360,I:1661,I:8487] [I:11768] 3 primolivello 1 False
+   python main.py [I:11033,I:8360,I:1661,I:8487] [I:11768] True 3 True primolivello 1 False
 ```
 Nel dettaglio, dopo il comando *python* i dati da inserire sono i seguenti nell'ordine:
 1. Il file da lanciare che nel nostro caso è sempre *main.py*
 2. Gli ID dei film piaciuti all'utente all'interno di parentesi quadre e separati da virgole (si consiglia almeno 3)
 3. L'ID o gli ID dei film raccomandati all'interno di parentesi quadre e separati da virgole
-4. Il numero di proprietà in comune da considerare per generare la spiegazione
-5. Il tipo di spiegazione che si vuole ricevere. Si possono avere 3 tipi diversi di spiegazione:
+4. ***True*** o ***False*** se si desidera o meno visualizzare il grafo
+5. Il numero di proprietà in comune da considerare per generare la spiegazione
+6. ***True*** o ***False*** se si desidera usare il ranking con IDF o meno
+7. Il tipo di spiegazione che si vuole ricevere. Si possono avere 3 tipi diversi di spiegazione:
    - ***baseline*** per una spiegazione basilare;
    - ***schema*** per un elenco di proprietà e informazioni in merito al film o ai film raccomandati;
    - ***primolivello*** per una spiegazione in linguaggio naturale che utilizza le proprietà in comune.
-6. Il tipo di configurazione per la frase in linguaggio naturale: ***1*** per la prima e ***2*** per la seconda
-7. ***True*** o ***False*** se si desidera o meno aggiungere i tag html ai film e alle proprietà per la formattazione <br>
+8. Il tipo di configurazione per la frase in linguaggio naturale: ***1*** per la prima e ***2*** per la seconda
+9. ***True*** o ***False*** se si desidera o meno aggiungere i tag html ai film e alle proprietà per la formattazione <br>
 
 E' importante inserire tutti i dati nel comando che lancia il recommender, anche se non verranno utilizzati per la spiegazione scelta. <br>
 Un esempio di output è il seguente:
