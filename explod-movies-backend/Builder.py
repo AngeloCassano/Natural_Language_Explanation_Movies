@@ -7,8 +7,8 @@ import sys
 # Funzione che prende in input i due dizionari di mapping dei film piaciuti e dei film raccomandati e crea il grafo
 # che li collega attraverso le proprieta in comune
 def costruisci_grafo(profile, recommendation):
-    profile1 = {}
-    recommendation1 = {}
+    profile_properties = {}
+    recommendation_properties = {}
     numero_proprieta = 0
 
     with open('movies_stored_prop.mapping', 'r') as f:
@@ -17,32 +17,31 @@ def costruisci_grafo(profile, recommendation):
             line = line.rstrip().split('\t')
             for key, value in profile.items():            # scorro i film piaciuti nel dizionario
                 if line[0] == value:                      # quando trovo l'URI del film piaciuto in una tripla RDF
-                    profile1[line[2]] = value             # inserisco la proprieta come chiave e il film come valore in un nuovo dizionario
+                    profile_properties[line[2]] = value             # inserisco la proprieta come chiave e il film come valore in un nuovo dizionario
 
     with open('movies_stored_prop.mapping', 'r') as f:
         for line in f:                                    # scorro le righe del file con le triple RDF
             line = line.rstrip().split('\t')
             for key, value in recommendation.items():     # scorro i film raccomandati nel dizionario
                 if line[0] == value:                      # quando trovo l'URI del film piaciuto in una tripla RDF
-                    recommendation1[line[2]] = value      # inserisco la proprieta come chiave e il film come valore in un nuovo dizionario di appoggio
+                    recommendation_properties[line[2]] = value      # inserisco la proprieta come chiave e il film come valore in un nuovo dizionario di appoggio
 
-    profile2 = {}
-    recommendation2 = {}
+    profile_common_prop = {}
+    recomm_common_prop = {}
 
-    for key, value in profile1.items():                   # scorro entrambi i dizionari appena creati
-        for key1, value1 in recommendation1.items():
-            if key == key1:                               # se film piaciuti e film raccomandati hanno proprieta in comune
-                profile2[key] = value                     # inserisco proprieta e film in un dizionario (solo quelle in comune)
-                recommendation2[key1] = value1
+    for key, value in profile_properties.items():                   # scorro entrambi i dizionari appena creati
+        if key in recommendation_properties.keys():                               # se film piaciuti e film raccomandati hanno proprieta in comune
+            profile_common_prop[key] = value                     # inserisco proprieta e film in un dizionario (solo quelle in comune)
+            recomm_common_prop[key] = recommendation_properties[key]
 
-    common_proprierties = list(profile2.keys())           # creo una lista con solo le proprieta in comune
+    common_properties = list(profile_common_prop.keys())           # creo una lista con solo le proprieta in comune
     G = nx.DiGraph()                                      # creo un grafo orientato
-    for key, value in profile2.items():
+    for key, value in profile_common_prop.items():
         G.add_edge(value, key)                            # aggiungo come nodi i film piaciuti e i film raccomandati
-    for key, value in recommendation2.items():            # aggiungo come nodi le proprieta in comune
+    for key, value in recomm_common_prop.items():            # aggiungo come nodi le proprieta in comune
         G.add_edge(key, value)                            # collego i nodi attraverso le proprieta in comune con archi
 
-    return G, common_proprierties, numero_proprieta
+    return G, common_properties, numero_proprieta
 
 
 # Funzione che disegna e visualizza il grafo creato
