@@ -25,22 +25,26 @@ def ranking_proprieta(G, proprieta_comuni, item_piaciuti, item_raccom, idf):
     beta = 0.5
     score_prop = {}
 
-    if idf:
-        for prop in proprieta_comuni:               # per ogni proprieta in comune, calcolo il numero di archi entranti
-            if prop in G.nodes():                   # ed uscenti e li uso nella formula, insieme al rispettivo IDF
-                num_in_edges = G.in_degree(prop)    # per calcolare il punteggio
-                num_out_edges = G.out_degree(prop)
-                score_prop[prop] = ((alfa * num_in_edges / len(item_piaciuti)) + (beta * num_out_edges / len(item_raccom))) * calcola_IDF(prop)
+    #if idf:
+    for prop in proprieta_comuni:               # per ogni proprieta in comune, calcolo il numero di archi entranti
+        if prop in G.nodes():                   # ed uscenti e li uso nella formula, insieme al rispettivo IDF
+            num_in_edges = G.in_degree(prop)    # per calcolare il punteggio
+            num_out_edges = G.out_degree(prop)
+            score_prop[prop] = ((alfa * num_in_edges / len(item_piaciuti)) + (beta * num_out_edges / len(item_raccom)))
+            if idf:
+                score_prop[prop] = score_prop[prop] * calcola_IDF(prop)
 
-        sorted_values = sorted(score_prop.values())  # ordino la lista di punteggi in ordine decrescente in modo da
-        sorted_values.reverse()                      # avere per prime le proprieta con più rilevanza
-        sorted_prop = {}
+        sorted_prop = dict((sorted(score_prop.items(), key=lambda item: item[1],  reverse=True)))  # ordino la lista di punteggi in ordine decrescente
+        #sorted_values.reverse()
+        #sorted_values = dict(sorted_values)
+        """sorted_prop = {} #dictionary (property, score)
         for i in sorted_values:
             for k in score_prop.keys():
                 if score_prop[k] == i:
                     sorted_prop[k] = score_prop[k]
                     break
-    else:
+        """
+    """else:
         for prop in proprieta_comuni:               # per ogni proprieta in comune, calcolo il numero di archi entranti
             if prop in G.nodes():                   # ed uscenti e li uso nella formula, insieme al rispettivo IDF
                 num_in_edges = G.in_degree(prop)    # per calcolare il punteggio
@@ -53,7 +57,7 @@ def ranking_proprieta(G, proprieta_comuni, item_piaciuti, item_raccom, idf):
         for i in sorted_values:
             for k in score_prop.keys():
                 sorted_prop[k] = i
-
+    """
     print("Le proprieta sono state rankate e ordinate con successo!\n")
 
     return sorted_prop
@@ -82,21 +86,25 @@ def stampa_proprieta(proprieta):
 # Funzione che prende in input il grafo creato, le proprieta rankate da considerare, i due dizionari dei film piaciuti
 # e raccomandati e inizializza la struttura dati che sara data in input alla funzione che genera la spiegazione
 # partendo da questi dati
-def inizializzaNewPreGenArchitecture(G, score_IDF, profile, recommendation):
-    NewPreGenArchitecture = []
-    profile_prov = get_property_movies(profile)                       # prendo le proprieta dei film piaciuti
-    recommendations_prov = get_property_movies(recommendation)        # prendo le proprieta dei film raccomandati
+def build_triple_structure(G, score_properties, profile, recommendation):
+    NewPreGenArchitecture = [] #list of triple of URI (URI film name -URI property- URI film name)
+    profile_prov = get_property_movies(profile)                       # temporary list of the profile films' properties
+    recommendations_prov = get_property_movies(recommendation)        # temporary list of the reccomenated films' properties
+    # dall'elenco delle proprietà vado a ricavare i film del profilo e quelli raccomandati, operazioni inutili
     profile = []
     recommendations = []
     for line in profile_prov:
-        profile.append(line[0])
+        if not (line[0] in profile):
+            profile.append(line[0])
 
     for line in recommendations_prov:
-        recommendations.append(line[0])
+        if not (line[0] in recommendations):
+            recommendations.append(line[0])
 
-    for proprieta, score in score_IDF.items():                        # per ogni proprieta in comune considerata
+    for proprieta, score in score_properties.items():
         prop = proprieta
-        opposite_nodes = estraiNodiOpposti_item_prop(G, prop)         # estraggo i nodi opposti alla proprieta (film)
+        # estraggo i nodi opposti alla proprieta (film)
+        opposite_nodes = estraiNodiOpposti_item_prop(G, prop)
         profile_nodes = []
         recomm_nodes = []
         for current in opposite_nodes:
@@ -113,22 +121,22 @@ def inizializzaNewPreGenArchitecture(G, score_IDF, profile, recommendation):
 
 # Funzione che prende in input il grafo creato e una proprieta ed estrae i nodi opposti alla proprieta
 def estraiNodiOpposti_item_prop(G, item):
-    lista_item_prop = []
+
     map_prop = {}
-    archi_item_user_prop_in = G.in_edges(item)                        # calcola archi entranti nella proprieta
-    for archi_itemURI_user_prop_in in archi_item_user_prop_in:
-        nodo_prop_in = archi_itemURI_user_prop_in[0]                  # prende il nodo opposto
-        map_prop[nodo_prop_in] = ""
+    prop_in_edges = G.in_edges(item)                    # calcola archi entranti nella proprieta
+    for in_edge in prop_in_edges:
+        in_opposite_node = in_edge[0]                  # prende il nodo opposto
+        map_prop[in_opposite_node] = ""
 
-    archi_item_user_prop_out = G.out_edges(item)                      # calcola archi uscenti dalla proprieta
-    for archi_itemURI_user_prop_out in archi_item_user_prop_out:
-        nodo_prop_out = archi_itemURI_user_prop_out[1]                # prende il nodo opposto
-        map_prop[nodo_prop_out] = ""
+    prop_out_edges = G.out_edges(item)                      # calcola archi uscenti dalla proprieta
+    for out_edge in prop_out_edges:
+        out_opposite_node = out_edge[1]                # prende il nodo opposto
+        map_prop[out_opposite_node] = ""
 
-    for prop, n in map_prop.items():
-        lista_item_prop.append(prop)
-
-    return lista_item_prop
+    """for prop, n in map_prop.items():
+        opposite_nodes.append(prop)"""
+    opposite_nodes = map_prop.keys()
+    return opposite_nodes
 
 
 def cmd_ranker(profilo, racc, idf):
