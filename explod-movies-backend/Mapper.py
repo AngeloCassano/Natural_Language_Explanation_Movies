@@ -23,20 +23,27 @@ def lettura_file(file_path):
 
 # Funzione che prende in input una lista contenente id di film (piaciuti o raccomandati) e con i dizionari di mapping
 # creati da lettura_file costruisce un dizionario avente per chiave il titolo dei film selezionati e per valore l'URI
+#INPUT: id_film insieme degli id dei film contenuti nel profile dell'utente, nel formato [I:<number>, I:<number>, ..., ecc]
 def mapping_profilo(id_film):
-    profile_prov = {}
+    profile_prov = {} #dizionario profilo provvisorio
     profile = {}
     id_key_dictionary, id_name_dictionary, numero_film = lettura_file("list_items_movies.mapping")
-    for key, value in id_key_dictionary.items():
+    """for key, value in id_key_dictionary.items():
         for item in id_film:
             if item == key:
                 profile_prov[item] = value
     for key1, value1 in profile_prov.items():
         for key2, value2 in id_name_dictionary.items():
             if value1 == key2:
-                profile[value1] = value2
-    return profile, numero_film
+                profile[value1] = value2"""
+    for item in id_film:
+        if item in id_key_dictionary.keys():
+            profile_prov[item] = id_key_dictionary[item]
+    for key, value in profile_prov.items():
+        profile[value] = id_name_dictionary[value]
 
+
+    return profile, numero_film
 
 # Funzione che prende in input un dizionario di film e attraverso il confronto degli uri con le proprieta di ogni film
 # all'interno del file di mapping seleziona e ritorna solo le proprieta dei film di interesse nel dizionario
