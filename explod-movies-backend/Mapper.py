@@ -5,8 +5,8 @@ import sys
 # Il primo dizionario ha per chiave l'id e per valore il titolo
 # Il secondo ha per chiave il titolo e per valore l'URI del film
 def lettura_file(file_path):
-    id_key_dictionary = {}
-    name_key_dictionary = {}
+    id_key_dictionary = {} #dizionario (k id, val titolo)
+    name_key_dictionary = {} #dizionari (k titolo, val uri film)
     numero_film = 0
     with open(file_path, 'r') as f:
         for line in f:
