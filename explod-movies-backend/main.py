@@ -65,6 +65,6 @@ else:
 
     # ESECUZIONE COMPONENTE GENERATOR
     print("\nEsecuzione componente Generator...\n")
-    NewPreGenArchitecture = inizializzaNewPreGenArchitecture(G, sorted_prop, profile, recommendation)
-    explanation = generate_explanation(NewPreGenArchitecture, recommendation, profile, scelta_configurazione, template, html)
+    triple_structure = build_triple_structure(G, sorted_prop, profile, recommendation)
+    explanation = generate_explanation(triple_structure, recommendation, profile, scelta_configurazione, template, html)
     print(explanation)
