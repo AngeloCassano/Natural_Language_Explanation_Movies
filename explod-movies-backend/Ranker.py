@@ -37,27 +37,7 @@ def ranking_proprieta(G, proprieta_comuni, item_piaciuti, item_raccom, idf):
         sorted_prop = dict((sorted(score_prop.items(), key=lambda item: item[1],  reverse=True)))  # ordino la lista di punteggi in ordine decrescente
         #sorted_values.reverse()
         #sorted_values = dict(sorted_values)
-        """sorted_prop = {} #dictionary (property, score)
-        for i in sorted_values:
-            for k in score_prop.keys():
-                if score_prop[k] == i:
-                    sorted_prop[k] = score_prop[k]
-                    break
-        """
-    """else:
-        for prop in proprieta_comuni:               # per ogni proprieta in comune, calcolo il numero di archi entranti
-            if prop in G.nodes():                   # ed uscenti e li uso nella formula, insieme al rispettivo IDF
-                num_in_edges = G.in_degree(prop)    # per calcolare il punteggio
-                num_out_edges = G.out_degree(prop)
-                score_prop[prop] = ((alfa * num_in_edges / len(item_piaciuti)) + (beta * num_out_edges / len(item_raccom))) * 1
 
-        sorted_values = sorted(score_prop.values())  # ordino la lista di punteggi in ordine decrescente in modo da
-        sorted_values.reverse()                      # avere per prime le proprieta con più rilevanza
-        sorted_prop = {}
-        for i in sorted_values:
-            for k in score_prop.keys():
-                sorted_prop[k] = i
-    """
     print("Le proprieta sono state rankate e ordinate con successo!\n")
 
     return sorted_prop
@@ -71,7 +51,6 @@ def proprieta_da_considerare(prop_rankate, numero_prop_considerate):
         prop_considerate[prop] = score
         if len(prop_considerate) == numero_prop_considerate:
             break
-
     return prop_considerate
 
 
@@ -87,17 +66,17 @@ def stampa_proprieta(proprieta):
 # e raccomandati e inizializza la struttura dati che sara data in input alla funzione che genera la spiegazione
 # partendo da questi dati
 def build_triple_structure(G, score_properties, profile, recommendation):
-    NewPreGenArchitecture = [] #list of triple of URI (URI film name -URI property- URI film name)
-    profile_prov = get_property_movies(profile)                       # temporary list of the profile films' properties
-    recommendations_prov = get_property_movies(recommendation)        # temporary list of the reccomenated films' properties
+    triple_structure = [] #list of triple of URI (URI film name -URI property- URI film name)
+    profile_prop = get_property_movies(profile)                       # temporary list of the profile films' properties
+    recommendations_prop = get_property_movies(recommendation)        # temporary list of the reccomenated films' properties
     # dall'elenco delle proprietà vado a ricavare i film del profilo e quelli raccomandati, operazioni inutili
     profile = []
     recommendations = []
-    for line in profile_prov:
+    for line in profile_prop:
         if not (line[0] in profile):
             profile.append(line[0])
 
-    for line in recommendations_prov:
+    for line in recommendations_prop:
         if not (line[0] in recommendations):
             recommendations.append(line[0])
 
@@ -114,9 +93,9 @@ def build_triple_structure(G, score_properties, profile, recommendation):
                 recomm_nodes.append(current)                                  # faccio lo stesso per i film raccomandati
 
         if len(profile_nodes) != 0 and len(recomm_nodes) != 0:     # aggiungo alla struttura dati creata gli item
-            NewPreGenArchitecture.append(str(recomm_nodes) + "\t" + prop + "\t" + str(profile_nodes))
+            triple_structure.append(str(recomm_nodes) + "\t" + prop + "\t" + str(profile_nodes))
 
-    return NewPreGenArchitecture
+    return triple_structure
 
 
 # Funzione che prende in input il grafo creato e una proprieta ed estrae i nodi opposti alla proprieta
