@@ -12,7 +12,7 @@ used_incipitRacc = {}
 # Funzione principale del Generator che in base al tipo di configurazione per l'explanation data in input
 # richiama le rispettive sottofunzioni per la generazione della spiegazione (baseline, schema, primolivello)
 # L'explanation è ritornata come output sotto forma di stringa
-def generate_explanation(NewPreGenArchitecture, item_raccom, profile, scelta_configurazione, template, html):
+def generate_explanation(triple_structure, item_raccom, profile, scelta_configurazione, template, html):
     explanation = ""
 
     if scelta_configurazione == "baseline":               # codice per la generazione della spiegazione baseline
@@ -36,12 +36,12 @@ def generate_explanation(NewPreGenArchitecture, item_raccom, profile, scelta_con
 
     elif scelta_configurazione == "primolivello":         # codice per la generazione della spiegazione di primolivello
         if len(item_raccom) == 1:
-            if len(NewPreGenArchitecture) > 0:
-                NewPreGenArchitecture = optimize_new_architecture(NewPreGenArchitecture, item_raccom, 15)
-        elif len(NewPreGenArchitecture) > 0:
-            NewPreGenArchitecture = optimize_new_architecture_groups(NewPreGenArchitecture, item_raccom)
+            if len(triple_structure) > 0:
+                triple_structure = optimize_triple_structure_single_reccomandation(triple_structure, item_raccom, 15)
+        elif len(triple_structure) > 0:
+            triple_structure = optimize_triple_structure_multiple_recommendation(triple_structure, item_raccom)
 
-        explanation = get_explanation_primo_livello(template, item_raccom, NewPreGenArchitecture, profile, html)
+        explanation = get_explanation_primo_livello(template, item_raccom, triple_structure, profile, html)
 
     return explanation
 
@@ -90,45 +90,45 @@ def get_descrizione_film(item_raccomandato, recommendation):
 # Funzione che ottimizza la struttura dati creata precedentemente per poter generare la spiegazione
 # Vengono effettuate le fasi centrali del Generator di accorpamento e filtraggio delle proprieta per evitare ripetizioni
 # Questa funzione e specifica per quando c'e solo un item raccomandato
-def optimize_new_architecture(NewPreGenArchitecture, item_raccom, numero_prop):
-    new_architecture_cleaned_all = []
-    for current in NewPreGenArchitecture:
+def optimize_triple_structure_single_reccomandation(triple_structure, item_raccom, numero_prop):
+    triple_structure_cleaned_all = []
+    for current in triple_structure:
         current = current.replace("['", "")
         current = current.replace("']", "")
-        new_architecture_cleaned_all.append(current)
+        triple_structure_cleaned_all.append(current)
 
-    new_architecture_cleaned = []
-    for s in new_architecture_cleaned_all:
+    triple_structure_cleaned = []
+    for s in triple_structure_cleaned_all:
         splitted = s.split('\t')
         items_racc = splitted[0].split(', ')
         for i in items_racc:
             for name, uri in item_raccom.items():
                 if i == uri:
-                    new_architecture_cleaned.append(i + "\t" + splitted[1] + "\t" + splitted[2])
+                    triple_structure_cleaned.append(i + "\t" + splitted[1] + "\t" + splitted[2])
 
-    new_architecture_cleaned_2 = []
-    if len(new_architecture_cleaned) > 0:
+    triple_structure_cleaned_2 = []
+    if len(triple_structure_cleaned) > 0:
         considered_items = []
         limit = numero_prop
         list_prop_cons = []
-        list_prop_cons.append(new_architecture_cleaned[0])
-        if limit >= len(new_architecture_cleaned):
-            limit = len(new_architecture_cleaned)
-        if len(new_architecture_cleaned) > 1:
+        list_prop_cons.append(triple_structure_cleaned[0])
+        if limit >= len(triple_structure_cleaned):
+            limit = len(triple_structure_cleaned)
+        if len(triple_structure_cleaned) > 1:
             for i in range(1, limit):                                     # fase di filtraggio
                 add = True
-                splitline = new_architecture_cleaned[i].split('\t')
+                splitline = triple_structure_cleaned[i].split('\t')
                 current_property = splitline[1]
                 current_property = pulisci_property(current_property)      # viene pulito l'URI della proprietà
                 for j in range(i):
-                    splitlineJ = new_architecture_cleaned[j].split('\t')
+                    splitlineJ = triple_structure_cleaned[j].split('\t')
                     old_property = splitlineJ[1]
                     old_property = pulisci_property(old_property)         # viene pulito l'URI della seconda proprieta
                     if current_property == old_property:                  # se le due proprieta sono uguali
                         add = False                                       # la seconda non verra presa in considerazione
                 if add:
-                    list_prop_cons.append(new_architecture_cleaned[i])
-                elif limit < len(new_architecture_cleaned):
+                    list_prop_cons.append(triple_structure_cleaned[i])
+                elif limit < len(triple_structure_cleaned):
                     limit = limit + 1
         for k in range(len(list_prop_cons)):                              # fase di accorpamento
             splitlineI = list_prop_cons[k].split('\t')
@@ -149,33 +149,33 @@ def optimize_new_architecture(NewPreGenArchitecture, item_raccom, numero_prop):
                 for z in range(len(prof_splitted)):
                     profI_pulito += pulisci_uri_item(prof_splitted[z]) + ", "
                 profI_pulito = profI_pulito[0:-2]
-                new_architecture_cleaned_2.append(pulisci_uri_item(recI) + "\t" + properties + "\t" + profI_pulito)
+                triple_structure_cleaned_2.append(pulisci_uri_item(recI) + "\t" + properties + "\t" + profI_pulito)
 
-    NewPreGenArchitecture = new_architecture_cleaned_2
+    triple_structure = triple_structure_cleaned_2
 
-    return NewPreGenArchitecture
+    return triple_structure
 
 
 # Funzione che ottimizza la struttura dati creata precedentemente per poter generare la spiegazione
 # Vengono effettuate le fasi centrali del Generator di accorpamento e filtraggio delle proprieta per evitare ripetizioni
 # Questa funzione e specifica per quando ci sono piu item raccomandati e ha lo stesso funzionamento della precedente
-def optimize_new_architecture_groups(NewPreGenArchitecture,item_raccom):
-    new_architecture_cleaned = []
-    for current in NewPreGenArchitecture:
+def optimize_triple_structure_multiple_recommendation(triple_structure, item_raccom):
+    triple_structure_cleaned = []
+    for current in triple_structure:
         current = current.replace("['", "")
         current = current.replace("']", "")
-        new_architecture_cleaned.append(current)
+        triple_structure_cleaned.append(current)
 
-    new_architecture_cleaned_2 = []
+    triple_structure_cleaned_2 = []
     considered_items = []
     limit = len(item_raccom)
     list_prop_cons = []
     covered_items = []
-    if limit >= len(NewPreGenArchitecture):
-        limit = len(NewPreGenArchitecture)
+    if limit >= len(triple_structure):
+        limit = len(triple_structure)
     i = 0
     while i < limit:
-        splitline = new_architecture_cleaned[i].split('\t')
+        splitline = triple_structure_cleaned[i].split('\t')
         movies = splitline[0].split(', ')
         add = False
         found = []
@@ -196,7 +196,7 @@ def optimize_new_architecture_groups(NewPreGenArchitecture,item_raccom):
             items = items[0:-2]
         if add:
             list_prop_cons.append(items + "\t" + splitline[1] + "\t" + splitline[2])
-        elif limit < len(NewPreGenArchitecture):
+        elif limit < len(triple_structure):
             limit = limit + 1
         i = i + 1
 
@@ -224,24 +224,24 @@ def optimize_new_architecture_groups(NewPreGenArchitecture,item_raccom):
         for p in range(len(rec_splitted)):
             recI_pulito += pulisci_uri_item(rec_splitted[p]) + ", "
         recI_pulito = recI_pulito[0:-2]
-        new_architecture_cleaned_2.append(recI_pulito + "\t" + properties + "\t" + profI_pulito)
+        triple_structure_cleaned_2.append(recI_pulito + "\t" + properties + "\t" + profI_pulito)
 
-    NewPreGenArchitecture = new_architecture_cleaned_2
+    triple_structure = triple_structure_cleaned_2
 
-    return NewPreGenArchitecture
+    return triple_structure
 
 
 # Funzione che genera la spiegazione di primolivello in linguaggio naturale
 # Si possono scegliere due tipi di template per generare la spiegazione e la possibilita di inserire tag html
 # per la visualizzazione degli items e delle proprieta in una pagina web
-def get_explanation_primo_livello(template, item_raccom, NewPreGenArchitecture, profile, html):
+def get_explanation_primo_livello(template, item_raccom, triple_structure, profile, html):
     natural_language_explanation = ""
     global item_spiegati
 
     if template == 1:                      # costruzione della spiegazione con il primo template
         if len(item_raccom) == 1:                      # costruzione della spiegazione se c'e un solo item raccomandato
-            if len(NewPreGenArchitecture) > 0:
-                natural_language_explanation = verboIniziale_getRandom() + " " + get_item_raccomandato(NewPreGenArchitecture, 0, html) + " because " + get_frasi(NewPreGenArchitecture, profile, html)
+            if len(triple_structure) > 0:
+                natural_language_explanation = verboIniziale_getRandom() + " " + get_item_raccomandato(triple_structure, 0, html) + " because " + get_frasi(triple_structure, profile, html)
                 natural_language_explanation = natural_language_explanation.replace("_", " ")
                 while "  " in natural_language_explanation:
                     natural_language_explanation = natural_language_explanation.replace("  ", " ")
@@ -249,27 +249,27 @@ def get_explanation_primo_livello(template, item_raccom, NewPreGenArchitecture, 
                 natural_language_explanation = "Your preferences are really particular! Sorry, but I can't still explain why you received such a recommendation."
 
         else:                                          # costruzione della spiegazione se ci sono più items raccomandati
-            if len(NewPreGenArchitecture) > 0:
-                for i in range(len(NewPreGenArchitecture)):
-                    natural_language_explanation += verboIniziale_getRandom() + " " + get_item_raccomandato(NewPreGenArchitecture, i, html) + " because " + get_group_frasi(NewPreGenArchitecture, i, profile, html)
+            if len(triple_structure) > 0:
+                for i in range(len(triple_structure)):
+                    natural_language_explanation += verboIniziale_getRandom() + " " + get_item_raccomandato(triple_structure, i, html) + " because " + get_group_frasi(triple_structure, i, profile, html)
                 natural_language_explanation = natural_language_explanation.replace("_", " ")
                 while "  " in natural_language_explanation:
                     natural_language_explanation = natural_language_explanation.replace("  ", " ")
 
-                if item_spiegati != 0 and item_spiegati < 5:
+                if item_spiegati < (len(item_raccom)):
                     natural_language_explanation += "\nThe other recommendations are really particular, I can't still explain why you received them."
             else:
                 natural_language_explanation = "Your preferences are really particular! Sorry, but I can't still explain why you received such a recommendation."
 
     elif template == 2:                    # costruzione della spiegazione con il secondo template
         if len(item_raccom) == 1:                      # costruzione della spiegazione se c'è un solo item raccomandato
-            if len(NewPreGenArchitecture) > 0:
-                natural_language_explanation = verboIniziale2_getRandom() + " " + get_frasi(NewPreGenArchitecture, profile, html) + " "
+            if len(triple_structure) > 0:
+                natural_language_explanation = verboIniziale2_getRandom() + " " + get_frasi(triple_structure, profile, html) + " "
                 frasi_raccomandazione = incipitRacc_getRandom()
                 if "So_why_don$t_you" not in frasi_raccomandazione:
-                    natural_language_explanation += frasi_raccomandazione + " watch " + get_item_raccomandato(NewPreGenArchitecture, 0, html)
+                    natural_language_explanation += frasi_raccomandazione + " watch " + get_item_raccomandato(triple_structure, 0, html)
                 else:
-                    natural_language_explanation += frasi_raccomandazione + " watch " + get_item_raccomandato(NewPreGenArchitecture, 0, html) + " ?"
+                    natural_language_explanation += frasi_raccomandazione + " watch " + get_item_raccomandato(triple_structure, 0, html) + " ?"
 
                 natural_language_explanation = natural_language_explanation.replace("_", " ")
                 natural_language_explanation = natural_language_explanation.replace("  ", " ")
@@ -282,26 +282,26 @@ def get_explanation_primo_livello(template, item_raccom, NewPreGenArchitecture, 
                 natural_language_explanation = "Your preferences are really particular! Sorry, but I can't still explain why you received such a recommendation."
 
         else:                                          # costruzione della spiegazione se ci sono più items raccomandati
-            if len(NewPreGenArchitecture) > 0:
-                for n in range(len(NewPreGenArchitecture)):
-                    if n + 1 < len(NewPreGenArchitecture) and n != 0:
-                        natural_language_explanation += get_avverbio(NewPreGenArchitecture) + " " + verboIniziale2_getRandom() + " " + get_group_frasi_2(NewPreGenArchitecture, n, profile, html) + ". "
-                    elif n < len(NewPreGenArchitecture) and n != 0:
-                        natural_language_explanation += get_avverbio_finale(NewPreGenArchitecture) + " " + verboIniziale2_getRandom() + " " + get_group_frasi_2(NewPreGenArchitecture, n, profile, html) + ". "
+            if len(triple_structure) > 0:
+                for n in range(len(triple_structure)):
+                    if n + 1 < len(triple_structure) and n != 0:
+                        natural_language_explanation += get_avverbio(triple_structure) + " " + verboIniziale2_getRandom() + " " + get_group_frasi_2(triple_structure, n, profile, html) + ". "
+                    elif n < len(triple_structure) and n != 0:
+                        natural_language_explanation += get_avverbio_finale(triple_structure) + " " + verboIniziale2_getRandom() + " " + get_group_frasi_2(triple_structure, n, profile, html) + ". "
                     else:
-                        natural_language_explanation += verboIniziale2_getRandom() + " " + get_group_frasi_2(NewPreGenArchitecture, n, profile, html) + ". "
+                        natural_language_explanation += verboIniziale2_getRandom() + " " + get_group_frasi_2(triple_structure, n, profile, html) + ". "
 
                     frasi_raccomandazione = incipitRacc_getRandom()
                     if "So_why_don$t_you" not in frasi_raccomandazione:
-                        natural_language_explanation += "\n" + frasi_raccomandazione + " watch " + get_item_raccomandato(NewPreGenArchitecture, n, html) + ".\n"
+                        natural_language_explanation += "\n" + frasi_raccomandazione + " watch " + get_item_raccomandato(triple_structure, n, html) + ".\n"
                     else:
-                        natural_language_explanation += "\n" + frasi_raccomandazione + " watch " + get_item_raccomandato(NewPreGenArchitecture, n, html) + "?\n"
+                        natural_language_explanation += "\n" + frasi_raccomandazione + " watch " + get_item_raccomandato(triple_structure, n, html) + "?\n"
 
                 natural_language_explanation = natural_language_explanation.replace("_", " ")
                 natural_language_explanation = natural_language_explanation.replace("$", "\'")
                 while "  " in natural_language_explanation:
                     natural_language_explanation = natural_language_explanation.replace("  ", " ")
-                if item_spiegati != 0 and item_spiegati < 5:
+                if item_spiegati < (len(item_raccom)):
                     natural_language_explanation += "\nThe other recommendations are really particular, I can't still explain why you received them."
             else:
                 natural_language_explanation = "Your preferences are really particular! Sorry, but I can't still explain why you received such a recommendation."
@@ -439,8 +439,8 @@ def avverbioFinale_getRandom():
 # Funzione che prende dalla struttura dati precedentemente creata gli items raccomandati e gli organizza
 # in modo da inserirli all'interno della spiegazione, varia in base al numero di items raccomandati
 # Due configurazioni per aggiungere o meno i tag html per lo stile
-def get_item_raccomandato(NewPreGenArchitecture, i, html):
-    items = NewPreGenArchitecture[i].split('\t')[0].split(', ')
+def get_item_raccomandato(triple_structure, i, html):
+    items = triple_structure[i].split('\t')[0].split(', ')
     item = ""
     global item_spiegati
     if html:                                            # configurazione con tag html
@@ -504,49 +504,49 @@ def incipitRacc_getRandom():
 
 
 # Funzione che per ogni riga della struttura dati creata richiama la funzione che costruisce le frasi
-def get_frasi(NewPreGenArchitecture, profile, html):
+def get_frasi(triple_structure, profile, html):
     frasi = ""
-    for i in range(len(NewPreGenArchitecture)):
-        frasi += costruisci_frase(NewPreGenArchitecture, i, profile, html)
+    for i in range(len(triple_structure)):
+        frasi += costruisci_frase(triple_structure, i, profile, html)
 
     return frasi
 
 
 # Funzione che richiama la funzione che costruisce la frase
-def get_group_frasi(NewPreGenArchitecture, i, profile, html):
-    return costruisci_frase(NewPreGenArchitecture, i, profile, html)
+def get_group_frasi(triple_structure, i, profile, html):
+    return costruisci_frase(triple_structure, i, profile, html)
 
 
 # Funzione che costruisce la frase che spiega la raccomandazione e inserisce gli avverbi in base al numero di raccomandazioni
-def costruisci_frase(NewPreGenArchitecture, i, profile, html):
+def costruisci_frase(triple_structure, i, profile, html):
     frase = ""
-    if i + 2 < len(NewPreGenArchitecture):
-        frase += "you " + get_avverbio_gradimento(NewPreGenArchitecture, i, profile) + "like " + get_lista_proprieta(NewPreGenArchitecture, i, html) + ".\n " + get_avverbio(NewPreGenArchitecture)
-    elif i + 1 < len(NewPreGenArchitecture):
-        frase += "you " + get_avverbio_gradimento(NewPreGenArchitecture, i, profile) + "like " + get_lista_proprieta(NewPreGenArchitecture, i, html) + ".\n " + get_avverbio_finale(NewPreGenArchitecture)
+    if i + 2 < len(triple_structure):
+        frase += "you " + get_avverbio_gradimento(triple_structure, i, profile) + "like " + get_lista_proprieta(triple_structure, i, html) + ".\n " + get_avverbio(triple_structure)
+    elif i + 1 < len(triple_structure):
+        frase += "you " + get_avverbio_gradimento(triple_structure, i, profile) + "like " + get_lista_proprieta(triple_structure, i, html) + ".\n " + get_avverbio_finale(triple_structure)
     else:
-        frase += "you " + get_avverbio_gradimento(NewPreGenArchitecture, i, profile) + "like " + get_lista_proprieta(NewPreGenArchitecture, i, html) + ".\n "
+        frase += "you " + get_avverbio_gradimento(triple_structure, i, profile) + "like " + get_lista_proprieta(triple_structure, i, html) + ".\n "
 
     return frase
 
 
 # Funzione che richiama una seconda funzione che costruisce la frase in un modo differente
-def get_group_frasi_2(NewPreGenArchitecture, i, profile, html):
-    return costruisci_frase_2(NewPreGenArchitecture, i, profile, html)
+def get_group_frasi_2(triple_structure, i, profile, html):
+    return costruisci_frase_2(triple_structure, i, profile, html)
 
 
 # Funzione che costruisce la frase che spiega la raccomandazione in un modo differente
-def costruisci_frase_2(NewPreGenArchitecture, i, profile, html):
+def costruisci_frase_2(triple_structure, i, profile, html):
     frase = ""
-    frase += "you " + get_avverbio_gradimento(NewPreGenArchitecture, i, profile) + "like " + get_lista_proprieta(NewPreGenArchitecture, i, html)
+    frase += "you " + get_avverbio_gradimento(triple_structure, i, profile) + "like " + get_lista_proprieta(triple_structure, i, html)
 
     return frase
 
 # Funzione che recupera la lista delle proprieta dalla struttura dati creata e che verranno usate nella spiegazione
 # e le inserisce nella frase della spiegazione in modo opportuno
 # Due configurazioni nel caso in cui si voglia inserire o meno i tag html per lo stile
-def get_lista_proprieta(NewPreGenArchitecture, i, html):
-    splitted = NewPreGenArchitecture[i].split('\t')
+def get_lista_proprieta(triple_structure, i, html):
+    splitted = triple_structure[i].split('\t')
     properties = splitted[1].split('-and-')
     lista_proprieta = ""
     domain = "movies"
@@ -631,14 +631,14 @@ def get_quantificatore(property, movies_user_rated):
 
 # Funzione che richiama la funzione che sceglie l'avverbio di gradimento in modo dinamico in base al numero di volte
 # che la proprieta appare nel profilo dell'utente
-def get_avverbio_gradimento(NewPreGenArchitecture, i, profile):
-    property = NewPreGenArchitecture[i].split('\t')[1].split('-and-')[0]
+def get_avverbio_gradimento(triple_structure, i, profile):
+    property = triple_structure[i].split('\t')[1].split('-and-')[0]
     return get_quantificatore(property, profile)
 
 
 # Funzione che in base al numero di raccomandazioni decide se inserire o meno l'avverbio nella frase
-def get_avverbio(NewPreGenArchitecture):
-    if len(NewPreGenArchitecture) == 1:
+def get_avverbio(triple_structure):
+    if len(triple_structure) == 1:
         return ""
     else:
         return "\n" + avverbio_getRandom() + ", "
@@ -646,10 +646,10 @@ def get_avverbio(NewPreGenArchitecture):
 
 # Funzione che in base al numero di raccomandazioni decide se inserire o meno l'avverbio nella frase e inoltre
 # sceglie quale avverbio inserire (normale o finale) controllando se si tratta dell'ultimo item da raccomandare
-def get_avverbio_finale(NewPreGenArchitecture):
-    if len(NewPreGenArchitecture) == 1:
+def get_avverbio_finale(triple_structure):
+    if len(triple_structure) == 1:
         return ""
-    elif len(NewPreGenArchitecture) == 2:
+    elif len(triple_structure) == 2:
         return "\n" + avverbio_getRandom() + ", "
     else:
         return "\n" + avverbioFinale_getRandom() + ", "
