@@ -1,6 +1,7 @@
 import random
 from Mapper import get_property_movies
 
+
 item_spiegati = 0
 used_verboIniziale = {}
 used_avverbio = {}
@@ -616,7 +617,13 @@ def get_quantificatore(property, movies_user_rated):
             if movie_curr == value:
                 film_with_property = film_with_property + 1
 
+
     score = film_with_property / len(movies_user_rated)
+    print("score della proprieta "+str(property)+" :"+str(score))
+    print("film con la proprieta: " +str(film_with_property) )
+    print("numero film nel profilo utente: " +str(len(movies_user_rated)))
+    print("")
+
     if score == 1.0:
         quantificatore = "always "
     elif score < 1.0 and score >= 0.6:
