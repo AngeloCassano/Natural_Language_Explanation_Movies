@@ -40,6 +40,9 @@ def costruisci_grafo(profile, recommendation):
         G.add_edge(value, key)                            # aggiungo come nodi i film piaciuti e i film raccomandati
     for key, value in recomm_common_prop.items():            # aggiungo come nodi le proprieta in comune
         G.add_edge(key, value)                            # collego i nodi attraverso le proprieta in comune con archi
+    #print(G.nodes)
+    print("stampa degli archi del grafo: ")
+    print(G.edges)
 
     return G, common_properties, numero_proprieta
 
