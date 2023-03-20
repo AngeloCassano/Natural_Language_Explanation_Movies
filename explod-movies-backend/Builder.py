@@ -41,8 +41,17 @@ def costruisci_grafo(profile, recommendation):
     for key, value in recomm_common_prop.items():            # aggiungo come nodi le proprieta in comune
         G.add_edge(key, value)                            # collego i nodi attraverso le proprieta in comune con archi
     #print(G.nodes)
+
+    print("stampa dei nodi del grafo")
+    for n in G.nodes:
+        print(n)
+
     print("stampa degli archi del grafo: ")
-    print(G.edges)
+    for e in G.edges:
+        print(e)
+
+
+
 
     return G, common_properties, numero_proprieta
 
