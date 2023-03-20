@@ -93,7 +93,10 @@ def build_triple_structure(G, score_properties, profile, recommendation):
                 recomm_nodes.append(current)                                  # faccio lo stesso per i film raccomandati
 
         if len(profile_nodes) != 0 and len(recomm_nodes) != 0:     # aggiungo alla struttura dati creata gli item
-            triple_structure.append(str(recomm_nodes) + "\t" + prop + "\t" + str(profile_nodes))
+            s=str(recomm_nodes) + "\t" + prop + "\t" + str(profile_nodes)
+            triple_structure.append(s)
+            print(s)
+            print("")
 
     return triple_structure
 
