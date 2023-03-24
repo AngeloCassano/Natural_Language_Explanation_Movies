@@ -26,24 +26,24 @@ def costruisci_grafo(profile, recommendation):
                     list_item2.append(line2[0])
                     profile_properties[line2[2]] = list_item2
                 # profile_properties[line2[2]] = value             # inserisco la proprieta come chiave e il film come valore in un nuovo dizionario
-    print(len(list_profile_properties))
-    for i in list_profile_properties:
-        print("contenuto di list_profile_properties: ")
-        for j in i:
-            print(j)
 
     with open('movies_stored_prop.mapping', 'r') as f:
         for line in f:  # scorro le righe del file con le triple RDF
+            numero_proprieta += 1
             line2 = line.rstrip().split('\t')
-            for key, value in recommendation.items():  # scorro i film raccomandati nel dizionario
-                if line2[0] == value:  # quando trovo l'URI del film piaciuto in una tripla RDF
-                    recommendation_properties[line2[
-                        2]] = value  # inserisco la proprieta come chiave e il film come valore in un nuovo dizionario di appoggio
+            if line2[0] in recommendation.values():  # scorro i film piaciuti nel dizionario
+                if line2[2] not in recommendation_properties.keys():  # quando trovo l'URI del film piaciuto in una tripla RDF
+                    list_item = [line2[0]]
+                    recommendation_properties[line2[2]] = list_item
+                else:
+                    list_item2: list[str] = recommendation_properties.pop(line2[2])
+                    list_item2.append(line2[0])
+                    recommendation_properties[line2[2]] = list_item2
 
     print("proprieta profilo: " + str(len(profile_properties)))
     print("numero proprieta" + str(numero_proprieta))
     print("proprieta raccomandati: " + str(len(recommendation_properties)))
-    sys.exit()
+
     profile_common_prop = {}
     recomm_common_prop = {}
 
@@ -55,9 +55,11 @@ def costruisci_grafo(profile, recommendation):
     common_properties = list(profile_common_prop.keys())  # creo una lista con solo le proprieta in comune
     G = nx.DiGraph()  # creo un grafo orientato
     for key, value in profile_common_prop.items():
-        G.add_edge(value, key)  # aggiungo come nodi i film piaciuti e i film raccomandati
+        for v in value:
+            G.add_edge(v, key)  # aggiungo come nodi i film piaciuti e i film raccomandati
     for key, value in recomm_common_prop.items():  # aggiungo come nodi le proprieta in comune
-        G.add_edge(key, value)  # collego i nodi attraverso le proprieta in comune con archi
+        for v in value:
+            G.add_edge(key, v)  # collego i nodi attraverso le proprieta in comune con archi
     print("proprieta comuni: " + str(len(common_properties)))
 
     print("stampa dei nodi del grafo")
