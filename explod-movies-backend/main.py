@@ -37,7 +37,7 @@ id_film_r1 =  ["I:8589","I:8942","I:656","I:1659","I:8889"]
 
 graph = "False"
     #sys.argv[3]
-numero_prop_considerate = 10
+numero_prop_considerate = 20
     #int(sys.argv[4])
 idf = "True"
     #sys.argv[5]
@@ -90,6 +90,7 @@ else:
     print("Numero di nodi del grafo: ", G.number_of_nodes())
     print("Numero di archi del grafo: ", G.number_of_edges())
     print("\n")
+
 
     # ESECUZIONE COMPONENTE RANKER
     print("\nEsecuzione componente Ranker NO-idf...\n")
