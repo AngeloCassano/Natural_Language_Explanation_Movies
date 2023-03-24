@@ -7,40 +7,58 @@ import sys
 # Funzione che prende in input i due dizionari di mapping dei film piaciuti e dei film raccomandati e crea il grafo
 # che li collega attraverso le proprieta in comune
 def costruisci_grafo(profile, recommendation):
-    profile_properties = {}
+    list_profile_properties = []
+    profile_properties: dict[str, list[str]] = {}
     recommendation_properties = {}
+    profile_properties_temp = {}
     numero_proprieta = 0
 
     with open('movies_stored_prop.mapping', 'r') as f:
-        for line in f:                                    # scorro le righe del file con le triple RDF
+        for line in f:  # scorro le righe del file con le triple RDF
             numero_proprieta += 1
-            line = line.rstrip().split('\t')
-            for key, value in profile.items():            # scorro i film piaciuti nel dizionario
-                if line[0] == value:                      # quando trovo l'URI del film piaciuto in una tripla RDF
-                    profile_properties[line[2]] = value             # inserisco la proprieta come chiave e il film come valore in un nuovo dizionario
+            line2 = line.rstrip().split('\t')
+            if line2[0] in profile.values():  # scorro i film piaciuti nel dizionario
+                if line2[2] not in profile_properties.keys():  # quando trovo l'URI del film piaciuto in una tripla RDF
+                    list_item =[line2[0]]
+                    profile_properties[line2[2]] = list_item
+                else:
+                    list_item2: list[str] = profile_properties.pop(line2[2])
+                    list_item2.append(line2[0])
+                    profile_properties[line2[2]] = list_item2
+                # profile_properties[line2[2]] = value             # inserisco la proprieta come chiave e il film come valore in un nuovo dizionario
+    print(len(list_profile_properties))
+    for i in list_profile_properties:
+        print("contenuto di list_profile_properties: ")
+        for j in i:
+            print(j)
 
     with open('movies_stored_prop.mapping', 'r') as f:
-        for line in f:                                    # scorro le righe del file con le triple RDF
-            line = line.rstrip().split('\t')
-            for key, value in recommendation.items():     # scorro i film raccomandati nel dizionario
-                if line[0] == value:                      # quando trovo l'URI del film piaciuto in una tripla RDF
-                    recommendation_properties[line[2]] = value      # inserisco la proprieta come chiave e il film come valore in un nuovo dizionario di appoggio
+        for line in f:  # scorro le righe del file con le triple RDF
+            line2 = line.rstrip().split('\t')
+            for key, value in recommendation.items():  # scorro i film raccomandati nel dizionario
+                if line2[0] == value:  # quando trovo l'URI del film piaciuto in una tripla RDF
+                    recommendation_properties[line2[
+                        2]] = value  # inserisco la proprieta come chiave e il film come valore in un nuovo dizionario di appoggio
 
+    print("proprieta profilo: " + str(len(profile_properties)))
+    print("numero proprieta" + str(numero_proprieta))
+    print("proprieta raccomandati: " + str(len(recommendation_properties)))
+    sys.exit()
     profile_common_prop = {}
     recomm_common_prop = {}
 
-    for key, value in profile_properties.items():                   # scorro entrambi i dizionari appena creati
-        if key in recommendation_properties.keys():                               # se film piaciuti e film raccomandati hanno proprieta in comune
-            profile_common_prop[key] = value                     # inserisco proprieta e film in un dizionario (solo quelle in comune)
+    for key, value in profile_properties.items():  # scorro entrambi i dizionari appena creati
+        if key in recommendation_properties.keys():  # se film piaciuti e film raccomandati hanno proprieta in comune
+            profile_common_prop[key] = value  # inserisco proprieta e film in un dizionario (solo quelle in comune)
             recomm_common_prop[key] = recommendation_properties[key]
 
-    common_properties = list(profile_common_prop.keys())           # creo una lista con solo le proprieta in comune
-    G = nx.DiGraph()                                      # creo un grafo orientato
+    common_properties = list(profile_common_prop.keys())  # creo una lista con solo le proprieta in comune
+    G = nx.DiGraph()  # creo un grafo orientato
     for key, value in profile_common_prop.items():
-        G.add_edge(value, key)                            # aggiungo come nodi i film piaciuti e i film raccomandati
-    for key, value in recomm_common_prop.items():            # aggiungo come nodi le proprieta in comune
-        G.add_edge(key, value)                            # collego i nodi attraverso le proprieta in comune con archi
-    #print(G.nodes)
+        G.add_edge(value, key)  # aggiungo come nodi i film piaciuti e i film raccomandati
+    for key, value in recomm_common_prop.items():  # aggiungo come nodi le proprieta in comune
+        G.add_edge(key, value)  # collego i nodi attraverso le proprieta in comune con archi
+    print("proprieta comuni: " + str(len(common_properties)))
 
     print("stampa dei nodi del grafo")
     for n in G.nodes:
@@ -49,9 +67,6 @@ def costruisci_grafo(profile, recommendation):
     print("stampa degli archi del grafo: ")
     for e in G.edges:
         print(e)
-
-
-
 
     return G, common_properties, numero_proprieta
 
@@ -77,8 +92,10 @@ def stampa_vicini(G, item):
 
 
 def cmd_builder(profilo, racc, graph):
-    if "[" not in sys.argv[2] or "]" not in sys.argv[2] or " " in sys.argv[2] or "[" not in sys.argv[3] or "]" not in sys.argv[3] or " " in sys.argv[3] or (sys.argv[4] != "True" and sys.argv[4] != "False"):
-        print("\nI dati inseriti non sono corretti!\nAssicurarsi di aver inserito gli id tra parentesi quadre e senza lasciare spazi.")
+    if "[" not in sys.argv[2] or "]" not in sys.argv[2] or " " in sys.argv[2] or "[" not in sys.argv[3] or "]" not in \
+            sys.argv[3] or " " in sys.argv[3] or (sys.argv[4] != "True" and sys.argv[4] != "False"):
+        print(
+            "\nI dati inseriti non sono corretti!\nAssicurarsi di aver inserito gli id tra parentesi quadre e senza lasciare spazi.")
         print("\nAssicurarsi di aver scelto True o False per la visualizzazione del grafo.")
     else:
         if graph == "True":
@@ -102,4 +119,3 @@ def cmd_builder(profilo, racc, graph):
 
 if __name__ == "__main__":
     globals()[sys.argv[1]](sys.argv[2][1:-1].split(','), sys.argv[3][1:-1].split(','), sys.argv[4])
-
