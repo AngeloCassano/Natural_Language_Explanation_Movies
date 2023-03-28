@@ -55,11 +55,14 @@ def costruisci_grafo(profile, recommendation):
     common_properties = list(profile_common_prop.keys())  # creo una lista con solo le proprieta in comune
     G = nx.DiGraph()  # creo un grafo orientato
     for key, value in profile_common_prop.items():
+
         for v in value:
-            G.add_edge(v, key)  # aggiungo come nodi i film piaciuti e i film raccomandati
+            conteggio = value.count(v)
+            G.add_edge(v, key, count=conteggio)  # aggiungo come nodi i film piaciuti e i film raccomandati
+
     for key, value in recomm_common_prop.items():  # aggiungo come nodi le proprieta in comune
         for v in value:
-            G.add_edge(key, v)  # collego i nodi attraverso le proprieta in comune con archi
+            G.add_edge(key, v, count=value.count(v))  # collego i nodi attraverso le proprieta in comune con archi
     print("proprieta comuni: " + str(len(common_properties)))
 
     print("stampa dei nodi del grafo")
