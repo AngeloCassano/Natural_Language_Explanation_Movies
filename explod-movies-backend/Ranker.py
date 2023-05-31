@@ -1,5 +1,6 @@
 from Mapper import *
 from Builder import *
+import random
 import sys
 
 
@@ -91,45 +92,55 @@ def build_triple_structure(G, score_properties, profile, recommendation):
         if not (line[0] in recommendations):
             recommendations.append(line[0])
 
+    profile_used = []
+    recomm_used = []
+
     for proprieta, score in score_properties.items():
         prop = proprieta
         # estraggo i nodi opposti alla proprieta (film)
-        opposite_nodes = estraiNodiOpposti_item_prop(G, prop)
-        profile_nodes = []
-        recomm_nodes = []
-        for current in opposite_nodes:
-            if current in profile and current not in profile_nodes:       # se il film piaciuto non e stato gia inserito
-                profile_nodes.append(current)                                 # lo inserisco
-            elif current in recommendations and current not in recomm_nodes:
-                recomm_nodes.append(current)                                  # faccio lo stesso per i film raccomandati
-
-        if len(profile_nodes) != 0 and len(recomm_nodes) != 0:     # aggiungo alla struttura dati creata gli item
-            s=str(recomm_nodes) + "\t" + prop + "\t" + str(profile_nodes)
+        profile_nodes, recommended_nodes = estraiNodiOpposti_item_prop(G, prop)
+        recom_item= ""
+        profile_item = ""
+        while (profile_item=="" and len(profile_nodes)>0) :
+            current_p = string_getRandom(profile_nodes)
+            if ((current_p not in profile_used) or (len(profile_nodes) <= 2)):       # se il film piaciuto non e stato gia inserito
+                profile_item= current_p
+            profile_nodes.remove(current_p)
+        while (recom_item == "" and len(recommended_nodes)>0) :
+            current_r = string_getRandom(recommended_nodes)
+            recommended_nodes.remove(current_r)
+            if ((current_r not in recomm_used)) or (len(recommended_nodes) <= 2):  # se il film piaciuto non e stato gia inserito
+                recom_item = current_r                       # faccio lo stesso per i film raccomandati
+        if recom_item != "" and profile_item != "" :
+            profile_used.append(current_p)
+            recomm_used.append(current_r)
+            s = str(recom_item) + "\t" + prop + "\t" + str(profile_item)
             triple_structure.append(s)
             print(s)
             print("")
 
     return triple_structure
 
+def string_getRandom(array_string):
+    random_string = random.choice(array_string)
+    return  random_string
+
 
 # Funzione che prende in input il grafo creato e una proprieta ed estrae i nodi opposti alla proprieta
 def estraiNodiOpposti_item_prop(G, item):
-
-    map_prop = {}
+    profile_nodes = []
+    recommended_nodes = []
     prop_in_edges = G.in_edges(item)                    # calcola archi entranti nella proprieta
     for in_edge in prop_in_edges:
-        in_opposite_node = in_edge[0]                  # prende il nodo opposto
-        map_prop[in_opposite_node] = ""
+        in_opposite_node = in_edge[0]  # prende il nodo opposto
+        profile_nodes.append(in_opposite_node)
 
     prop_out_edges = G.out_edges(item)                      # calcola archi uscenti dalla proprieta
     for out_edge in prop_out_edges:
         out_opposite_node = out_edge[1]                # prende il nodo opposto
-        map_prop[out_opposite_node] = ""
+        recommended_nodes.append(out_opposite_node)
 
-    """for prop, n in map_prop.items():
-        opposite_nodes.append(prop)"""
-    opposite_nodes = map_prop.keys()
-    return opposite_nodes
+    return profile_nodes, recommended_nodes
 
 
 def cmd_ranker(profilo, racc, idf):
