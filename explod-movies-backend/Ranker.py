@@ -79,46 +79,44 @@ def stampa_proprieta(proprieta):
 # partendo da questi dati
 def build_triple_structure(G, score_properties, profile, recommendation):
     triple_structure = [] #list of triple of URI (URI film name -URI property- URI film name)
-    profile_prop = get_property_movies(profile)                       # temporary list of the profile films' properties
-    recommendations_prop = get_property_movies(recommendation)        # temporary list of the reccomenated films' properties
-    # dall'elenco delle proprietà vado a ricavare i film del profilo e quelli raccomandati, operazioni inutili
-    profile = []
-    recommendations = []
-    for line in profile_prop:
-        if not (line[0] in profile):
-            profile.append(line[0])
-
-    for line in recommendations_prop:
-        if not (line[0] in recommendations):
-            recommendations.append(line[0])
-
     profile_used = []
     recomm_used = []
 
     for proprieta, score in score_properties.items():
+        s=[]
         prop = proprieta
         # estraggo i nodi opposti alla proprieta (film)
         profile_nodes, recommended_nodes = estraiNodiOpposti_item_prop(G, prop)
-        recom_item= ""
+        s.append(recommended_nodes)
+        s.append(prop)
+        s.append(profile_nodes)
+        #s = str(recom_item) + "\t" + prop + "\t" + str(profile_item)
+        triple_structure.append(s)
+
+        """recom_item= ""
         profile_item = ""
         while (profile_item=="" and len(profile_nodes)>0) :
             current_p = string_getRandom(profile_nodes)
-            if ((current_p not in profile_used) or (len(profile_nodes) <= 2)):       # se il film piaciuto non e stato gia inserito
-                profile_item= current_p
             profile_nodes.remove(current_p)
+            if current_p not in profile_used:       # se il film piaciuto non e stato gia inserito
+                profile_item= current_p
         while (recom_item == "" and len(recommended_nodes)>0) :
             current_r = string_getRandom(recommended_nodes)
             recommended_nodes.remove(current_r)
-            if ((current_r not in recomm_used)) or (len(recommended_nodes) <= 2):  # se il film piaciuto non e stato gia inserito
-                recom_item = current_r                       # faccio lo stesso per i film raccomandati
+            if current_r not in recomm_used:  # se il film piaciuto non e stato gia inserito
+                recom_item = current_r
+                # faccio lo stesso per i film raccomandati
         if recom_item != "" and profile_item != "" :
             profile_used.append(current_p)
+
             recomm_used.append(current_r)
+
             s = str(recom_item) + "\t" + prop + "\t" + str(profile_item)
             triple_structure.append(s)
             print(s)
-            print("")
-
+            print("")"""
+    for i in range (0,3 ):
+        print(triple_structure[i])
     return triple_structure
 
 def string_getRandom(array_string):
