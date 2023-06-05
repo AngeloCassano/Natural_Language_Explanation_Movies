@@ -115,9 +115,24 @@ def build_triple_structure(G, score_properties, profile, recommendation):
             triple_structure.append(s)
             print(s)
             print("")"""
-    for i in range (0,3 ):
-        print(triple_structure[i])
+    #for i in range (0,3 ):
+        #(triple_structure[i])
+    occurence= get_occurence_item(triple_structure, recommendation)
     return triple_structure
+
+def get_occurence_item (triple_structure, recommendation):
+    occurence_items= {}
+    count=0
+    for name,uri in recommendation.items():
+        count = 0
+        temp=[]
+        for line in triple_structure:
+            recommended_items= line[0]
+            if(uri in recommended_items):
+                count= count+1
+        occurence_items[uri] = count
+    sorted_occurence =sorted(occurence_items.items(), key=lambda x: x[1])
+    return sorted_occurence
 
 def string_getRandom(array_string):
     random_string = random.choice(array_string)
