@@ -79,8 +79,8 @@ def stampa_proprieta(proprieta):
 # partendo da questi dati
 def build_triple_structure(G, score_properties, profile, recommendation):
     triple_structure = [] #list of triple of URI (URI film name -URI property- URI film name)
-    profile_used = []
-    recomm_used = []
+    prop_used = []
+    opti_triple_structure =[]
 
     for proprieta, score in score_properties.items():
         s=[]
@@ -92,33 +92,33 @@ def build_triple_structure(G, score_properties, profile, recommendation):
         s.append(profile_nodes)
         #s = str(recom_item) + "\t" + prop + "\t" + str(profile_item)
         triple_structure.append(s)
-
-        """recom_item= ""
+    occurence = get_occurence_item(triple_structure, recommendation)
+    for uri, count in occurence:
+        for rec_items, prop, prop_items in triple_structure:
+            if uri in rec_items:
+                if prop not in prop_used:
+                    prop_used.append(prop)
+                    current_p = string_getRandom(prop_items)
+                    s = str(uri) + "\t" + prop + "\t" + str(current_p)
+                    opti_triple_structure.append(s)
+                    print(s)
+        """recom_item= uri
         profile_item = ""
         while (profile_item=="" and len(profile_nodes)>0) :
-            current_p = string_getRandom(profile_nodes)
+            
             profile_nodes.remove(current_p)
             if current_p not in profile_used:       # se il film piaciuto non e stato gia inserito
-                profile_item= current_p
-        while (recom_item == "" and len(recommended_nodes)>0) :
-            current_r = string_getRandom(recommended_nodes)
-            recommended_nodes.remove(current_r)
-            if current_r not in recomm_used:  # se il film piaciuto non e stato gia inserito
-                recom_item = current_r
-                # faccio lo stesso per i film raccomandati
-        if recom_item != "" and profile_item != "" :
-            profile_used.append(current_p)
+                 profile_item= current_p"""
+                        # faccio lo stesso per i film raccomandati
+    """if recom_item != "" and profile_item != "" :
+        profile_used.append(current_p)
+        s = str(recom_item) + "\t" + prop + "\t" + str(profile_item)
+        triple_structure.append(s)
+        print(s)
+        print("")"""
+    return opti_triple_structure
 
-            recomm_used.append(current_r)
 
-            s = str(recom_item) + "\t" + prop + "\t" + str(profile_item)
-            triple_structure.append(s)
-            print(s)
-            print("")"""
-    #for i in range (0,3 ):
-        #(triple_structure[i])
-    occurence= get_occurence_item(triple_structure, recommendation)
-    return triple_structure
 
 def get_occurence_item (triple_structure, recommendation):
     occurence_items= {}
