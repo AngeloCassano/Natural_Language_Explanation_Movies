@@ -78,7 +78,7 @@ $html = 'True';
 
 
 function createURL($film_piaciuti, $film_raccomandati, $num_proprieta, $tipo_spiegazione, $template, $html){
-        $url = "http://90.147.102.243:5036/rec/?film_piaciuti=" . $film_piaciuti . "&film_raccomandati=" . $film_raccomandati . "&num_proprieta=" . $num_proprieta . "&tipo_spiegazione=" . $tipo_spiegazione . "&template=" . $template . "&html=" . $html;
+        $url = "http://127.0.0.1:5036/rec/?film_piaciuti=" . $film_piaciuti . "&film_raccomandati=" . $film_raccomandati . "&num_proprieta=" . $num_proprieta . "&tipo_spiegazione=" . $tipo_spiegazione . "&template=" . $template . "&html=" . $html;
 
         return $url;
 }
