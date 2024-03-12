@@ -33,20 +33,23 @@ class Rec(Resource):
 
         # ESECUZIONE COMPONENTE BUILDER
         print("\nEsecuzione componente Builder...\n")
-        G, common_properties = costruisci_grafo(profile, recommendation)
-        visualizza_grafo(G)
+        G, common_properties, numero_proprieta = costruisci_grafo(profile, recommendation)
+        print("Numero di proprieta mappate: ", numero_proprieta)
+        print("\nGrafo creato con successo!\n")
+        print("Numero di nodi del grafo: ", G.number_of_nodes())
+        print("Numero di archi del grafo: ", G.number_of_edges())
         print("\n")
 
         # ESECUZIONE COMPONENTE RANKER
         print("\nEsecuzione componente Ranker...\n")
-        ranked_prop = ranking_proprieta(G, common_properties, profile, recommendation)
-        sorted_prop = proprieta_da_considerare(ranked_prop, numero_prop_considerate)
-        stampa_proprieta(sorted_prop)
+        ranked_prop_idf = ranking_proprieta(G, common_properties, profile, recommendation, idf=True)
+        sorted_prop_idf = proprieta_da_considerare(ranked_prop_idf, numero_prop_considerate)
+        stampa_proprieta(sorted_prop_idf)
 
         # ESECUZIONE COMPONENTE GENERATOR
         print("\nEsecuzione componente Generator...\n")
-        NewPreGenArchitecture = inizializzaNewPreGenArchitecture(G, sorted_prop, profile, recommendation)
-        explanation = generate_explanation(NewPreGenArchitecture, recommendation, profile, scelta_configurazione, template, html)
+        triple_structure = build_triple_structure(G, sorted_prop_idf, profile, recommendation)
+        explanation = generate_explanation(triple_structure, recommendation, profile, scelta_configurazione, template, html)
         print(explanation)
         result = {'explanation': explanation}
 
