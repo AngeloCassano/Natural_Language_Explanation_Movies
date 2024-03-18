@@ -41,8 +41,8 @@ def costruisci_grafo(profile, recommendation):
                     recommendation_properties[line2[2]] = list_item2
 
     print("proprieta profilo: " + str(len(profile_properties)))
-    print("numero proprieta" + str(numero_proprieta))
     print("proprieta raccomandati: " + str(len(recommendation_properties)))
+    print("numero proprieta mappate: " + str(numero_proprieta))
 
     profile_common_prop = {}
     recomm_common_prop = {}
