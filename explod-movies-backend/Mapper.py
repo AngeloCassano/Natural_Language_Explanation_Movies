@@ -28,14 +28,6 @@ def mapping_profilo(id_film):
     profile_prov = {} #dizionario profilo provvisorio
     profile = {}
     id_key_dictionary, id_name_dictionary, numero_film = lettura_file("list_items_movies.mapping")
-    """for key, value in id_key_dictionary.items():
-        for item in id_film:
-            if item == key:
-                profile_prov[item] = value
-    for key1, value1 in profile_prov.items():
-        for key2, value2 in id_name_dictionary.items():
-            if value1 == key2:
-                profile[value1] = value2"""
     for item in id_film:
         if item in id_key_dictionary.keys():
             profile_prov[item] = id_key_dictionary[item]
