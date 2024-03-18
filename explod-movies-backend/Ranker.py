@@ -102,20 +102,7 @@ def build_triple_structure(G, score_properties, profile, recommendation):
                     s = str(uri) + "\t" + prop + "\t" + str(current_p)
                     opti_triple_structure.append(s)
                     print(s)
-        """recom_item= uri
-        profile_item = ""
-        while (profile_item=="" and len(profile_nodes)>0) :
-            
-            profile_nodes.remove(current_p)
-            if current_p not in profile_used:       # se il film piaciuto non e stato gia inserito
-                 profile_item= current_p"""
-                        # faccio lo stesso per i film raccomandati
-    """if recom_item != "" and profile_item != "" :
-        profile_used.append(current_p)
-        s = str(recom_item) + "\t" + prop + "\t" + str(profile_item)
-        triple_structure.append(s)
-        print(s)
-        print("")"""
+    print("\n")
     return opti_triple_structure
 
 
