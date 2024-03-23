@@ -25,17 +25,13 @@ def ranking_proprieta(G, proprieta_comuni, item_piaciuti, item_raccom, idf):
     alfa = 0.5
     beta = 0.5
     score_prop = {}
-
-    #if idf:
-    for prop in proprieta_comuni:               # per ogni proprieta in comune, calcolo il numero di archi entranti
-        if prop in G.nodes():                   # ed uscenti e li uso nella formula, insieme al rispettivo IDF
-            #num_in_edges = G.in_degree(prop)    # per calcolare il punteggio
-            #num_out_edges = G.out_degree(prop)
+    for prop in proprieta_comuni:
+        if prop in G.nodes():
             num_out_edges = 0
             num_in_edges = 0
-            out_ed = G.out_edges(prop)
-            for ed in out_ed:
-                e = G[ed[0]][ed[1]]
+            out_ed = G.out_edges(prop)      # per ogni proprieta in comune, calcolo il numero di archi entranti
+            for ed in out_ed:               # ed uscenti e li uso nella formula, insieme al rispettivo IDF
+                e = G[ed[0]][ed[1]]         # per calcolare il punteggio
                 num_out_edges = num_out_edges + e['count']
             in_ed = G.in_edges(prop)
             for ed in in_ed:
@@ -47,8 +43,7 @@ def ranking_proprieta(G, proprieta_comuni, item_piaciuti, item_raccom, idf):
                 score_prop[prop] = score_prop[prop] * calcola_IDF(prop)
 
         sorted_prop = dict((sorted(score_prop.items(), key=lambda item: item[1],  reverse=True)))  # ordino la lista di punteggi in ordine decrescente
-        #sorted_values.reverse()
-        #sorted_values = dict(sorted_values)
+
 
     print("Le proprieta sono state rankate e ordinate con successo!\n")
 
